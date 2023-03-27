@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#Variable Declaration
+
+PACKAGE="wget unzip apache2"
+SVC="apache2"
+URL="https://templatemo.com/tm-zip-files-2020/templatemo_520_highway.zip"
+ARTIFACT="templatemo_520_highway"
+TEMP="/tmp/webfiles"
+
 
 # Installing dependencies
 
@@ -8,32 +16,33 @@ echo "Installing dependencies"
 echo "##########################################"
 echo
 #sudo apt remove apache2
-sudo apt install wget unzip apache2 -y
+sudo apt install $PACKAGE -y > /dev/null
 
 #Enabeling and starting apache service
 echo "##########################################"
 echo "Enabeling and starting httpd service"
 echo "##########################################"
-sudo systemctl start apache2
-sudo systemctl enable apache2
+sudo systemctl start $SVC
+sudo systemctl enable $SVC
 echo 
+
 #Making tmp directory
 echo "##########################################"
 echo "Starting artifact deployment"
 echo "##########################################"
-mkdir -p /tmp/webfiles
+mkdir -p $TEMP > /dev/null
 
-cd /tmp/webfiles
-wget https://www.tooplate.com/zip-templates/2132_clean_work.zip
-unzip 2132_clean_work.zip
-sudo cp -r 2132_clean_work/* /var/www/html/
+cd /tmp/webfiles > /dev/null
+wget $URL 
+unzip $ARTIFACT.zip
+sudo cp -r $ARTIFACT/* /var/www/html/ > /dev/null
 
 #Restarting server
 echo "##########################################"
 echo "Restarting HTTPD service"
 echo "##########################################"
 
-sudo systemctl restart apache2
+sudo systemctl restart $SVC
 echo
 
 #Cleanup
@@ -41,5 +50,5 @@ echo "##########################################"
 echo "Removing temperory files"
 echo "##########################################"
 
-rm -rf /tmp/webfiles
+rm -rf $TEMP > /dev/null
 echo 
